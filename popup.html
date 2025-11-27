@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Briefly Login</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  width: 300px;
+  margin: 0;
+  padding: 0;
+  background: #f9f9f9;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #1f2937;
+  color: #fff;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.profile-con {
+  display: flex;
+  align-items: center;
+}
+
+.profile-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 10px;
+}
+
+.btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #2563eb;
+}
+
+.bookmark-container {
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  border-bottom: 1px solid #ddd;
+}
+
+.bookmark-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 0 0 2px rgba(0,0,0,0.1);
+}
+
+.bookmark-item .favicon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.bookmark-info .title {
+  font-weight: bold;
+  margin: 0;
+  font-size: 14px;
+}
+
+.bookmark-info .summary {
+  margin: 0;
+  font-size: 12px;
+  color: #555;
+}
+
+.empty-text {
+  color: #888;
+  text-align: center;
+  font-size: 14px;
+}
+
+.error-text {
+  color: red;
+  text-align: center;
+}
+  </style>
+</head>
+<body>
+  <main class="main">
+    <div class="login-container">
+        <h3>Sign in to Briefly</h3>
+        <button id="googleLogin">Sign in with Google</button>
+        <p id="status"></p>
+    </div>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>
