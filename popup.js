@@ -2,10 +2,13 @@ const main = document.querySelector(".main");
 
 function renderLoginUI() {
   main.innerHTML = `
+    <header>
+        <a href="#" class="logo">Briefly</a>
+    </header>
     <div class="login-container">
-      <h3>Login to Briefly</h3>
-      <button id="googleLogin" class="btn">Login with Google</button>
-      <p id="status"></p>
+        <h3>Sign in to Briefly</h3>
+        <button id="googleLogin" class="btn">Sign in with Google</button>
+        <p id="status"></p>
     </div>
   `;
 
@@ -16,23 +19,94 @@ function renderBookmarkUI(user) {
   main.innerHTML = `
     <header>
       <a href="#" class="logo">Briefly</a>
-      <span class="profile-con">
+      <span id="profileCon" class="profile-con">
         <img class="profile-image" src="${user.photo}" alt="Profile image">
+        <div id="signOutCon" class='sign-out'><button id="signOutBtn" class="sign-out-btn">Sign Out</button></div>
       </span>
     </header>
 
     <div id="bookmark-container" class="bookmark-container">
-      <p>Loading bookmarks...</p>
+    <div class="loading-container">
+        <div class="skeleton-bookmark">
+                <div class="skeleton-favicon skeleton"></div>
+                <div class="skeleton-bookmark-info">
+                    <div class="skeleton-title skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                </div>
+        </div>    
+        <div class="skeleton-bookmark">
+                <div class="skeleton-favicon skeleton"></div>
+                <div class="skeleton-bookmark-info">
+                    <div class="skeleton-title skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                </div>
+        </div>    
+        <div class="skeleton-bookmark">
+                <div class="skeleton-favicon skeleton"></div>
+                <div class="skeleton-bookmark-info">
+                    <div class="skeleton-title skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                </div>
+        </div>    
+        <div class="skeleton-bookmark">
+                <div class="skeleton-favicon skeleton"></div>
+                <div class="skeleton-bookmark-info">
+                    <div class="skeleton-title skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                </div>
+        </div>    
+        <div class="skeleton-bookmark">
+                <div class="skeleton-favicon skeleton"></div>
+                <div class="skeleton-bookmark-info">
+                    <div class="skeleton-title skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                </div>
+        </div>    
+        <div class="skeleton-bookmark">
+                <div class="skeleton-favicon skeleton"></div>
+                <div class="skeleton-bookmark-info">
+                    <div class="skeleton-title skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                </div>
+        </div>    
+        <div class="skeleton-bookmark">
+                <div class="skeleton-favicon skeleton"></div>
+                <div class="skeleton-bookmark-info">
+                    <div class="skeleton-title skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                </div>
+        </div>    
+    </div>
     </div>
 
     <div class="container">
-      <h3>Add current site to bookmarks</h3>
-      <button id="bookmarkButton" class="btn bookmarkButton">Bookmark Page</button>
+      <button id="bookmarkButton" class="btn bookmarkButton">Bookmark Current Page</button>
       <p id="status"></p>
     </div>
   `;
 
   document.getElementById("bookmarkButton").onclick = bookmarkCurrentPage;
+  function showSignOutButton() {
+    document.getElementById("signOutCon").classList.toggle('show-sign-out');
+  }
+  const profileCon = document.getElementById("profileCon");
+  console.log(profileCon);
+
+  profileCon.addEventListener('click', showSignOutButton)
 }
 
 async function getUserBookmarks(userId) {
@@ -47,31 +121,36 @@ async function getUserBookmarks(userId) {
     container.innerHTML = "";
 
     if (bookmarks.length === 0) {
-      container.innerHTML = `<p class="empty-text">No bookmarks yet</p>`;
+      container.innerHTML = `
+          <div class="loading-container"><p class="empty-text">No bookmarks yet</p></div>`;
       return;
     }
 
     bookmarks.forEach((bm) => {
       const div = document.createElement("div");
+      div.onclick = () => openUrl(bm.url);
       div.className = "bookmark-item";
       div.innerHTML = `
-        <img src="${bm.favicon}" class="favicon">
+        <div class="favicon-con">
+                <img src="${bm.favicon}" class="favicon">
+        </div>
         <div class="bookmark-info">
-          <p class="title">${bm.title}</p>
-          <p class="summary">${bm.summary}</p>
+          <p class="title">${bm.title.length >  25 ? bm.title.substring(0, 25) + '...' : bm.title}</p>
+          <p class="summary">${bm.summary.length >  100 ? bm.summary.substring(0, 100) + '...' : bm.summary}</p>
         </div>
       `;
       container.appendChild(div);
     });
   } catch (err) {
-    container.innerHTML = `<p class="error-text">Failed to load bookmarks</p>`;
+    container.innerHTML = `<div class="loading-container"><p class="error-text">Failed to load bookmarks.</p></div>`
     console.error(err);
   }
 }
 
 async function bookmarkCurrentPage() {
     const statusEl = document.getElementById("status");
-    statusEl.textContent = "Adding bookmark...";
+    const bookmarkButton = document.getElementById("bookmarkButton");
+    bookmarkButton.textContent = "Bookmarking page...";
   
     try {
         const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -104,20 +183,31 @@ async function bookmarkCurrentPage() {
         const result = await res.json();
   
         if (!res.ok || !result.success) {
-          statusEl.textContent = "Failed to add bookmark.";
+            bookmarkButton.textContent = "Bookmark current page";
+          statusEl.textContent = "Failed to bookmark page.";
+          setTimeout(()=> {
+            statusEl.textContent = "";
+        }, 3000)
           console.error(result);
           return;
         }
         const bookmark = result.data;
-  
+
+        bookmarkButton.textContent = "Bookmark current page";
         statusEl.textContent = "Bookmark added!";
+        setTimeout(()=> {
+            statusEl.textContent = "";
+        }, 3000)
   
         const container = document.getElementById("bookmark-container");
   
         const div = document.createElement("div");
+        div.onclick = () => openUrl(bookmark.url);
         div.className = "bookmark-item";
         div.innerHTML = `
-          <img src="${bookmark.favicon}" class="favicon">
+          <div class="favicon-con">
+                <img src="${bookmark.favicon}" class="favicon">
+            </div>
           <div class="bookmark-info">
             <p class="title">${bookmark.title}</p>
             <p class="summary">${bookmark.summary}</p>
@@ -142,6 +232,7 @@ chrome.storage.local.get(["firebaseUid", "firebaseIdToken", "user"], (data) => {
 });
   
 async function loginWithGoogle() {
+    document.getElementById("googleLogin").textContent = "Signing in....";
   const clientId = "56987391225-vvm21g67ovdbq5pvathulvglvo4ca6pn.apps.googleusercontent.com";
   
   const authUrl = 
@@ -156,6 +247,7 @@ async function loginWithGoogle() {
     async (redirectUrl) => {
       if (!redirectUrl) {
         document.getElementById("status").textContent = "Login failed.";
+        document.getElementById("googleLogin").textContent = "Sign in with Goggle"
         return;
       }
 
@@ -163,6 +255,7 @@ async function loginWithGoogle() {
       const googleAccessToken = params.get("access_token");
 
       if (!googleAccessToken) {
+        document.getElementById("googleLogin").textContent = "Sign in with Goggle"
         document.getElementById("status").textContent = "No access token returned.";
         return;
       }
@@ -186,6 +279,7 @@ async function loginWithGoogle() {
       const firebaseUid = firebaseResp.localId;
 
       if (!firebaseIdToken) {
+        document.getElementById("googleLogin").textContent = "Sign in with Goggle"
         document.getElementById("status").textContent = "Firebase login failed.";
         return;
       }
@@ -214,8 +308,39 @@ async function loginWithGoogle() {
         })
       });
 
+      document.getElementById("googleLogin").textContent = "Sign in with Goggle"
       document.getElementById("status").textContent =
         `Welcome ${firebaseResp.displayName}`;
+        location.reload();
     }
   );
 }
+
+document.addEventListener("click", (e) => {
+    if (e.target.id === "signOutBtn") {
+      signOutUser();
+    }
+  });
+  
+  function signOutUser() {
+    chrome.storage.local.remove(
+      ["firebaseUid", "firebaseIdToken", "user"],
+      () => {
+        console.log("User signed out.");
+        location.reload();
+      }
+    );
+  }
+
+  function showSignOutButton() {
+    document.getElementById("signOutCon").style.display = 'flex';
+  }
+  const profileCon = document.getElementById("profileCon");
+  console.log(profileCon);
+
+  profileCon.addEventListener('click', showSignOutButton)
+
+  function openUrl(url) {
+    chrome.tabs.create({ url });
+  }  
+  

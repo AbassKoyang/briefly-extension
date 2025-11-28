@@ -5,37 +5,65 @@
   <style>
     body {
   font-family: Arial, sans-serif;
-  width: 300px;
+  width: 550px;
   margin: 0;
   padding: 0;
-  background: #f9f9f9;
+  background: white;
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+  overflow-y: hidden;
+}
+body::-webkit-scrollbar {
+  display: none; 
+}
+.main{
+    width: 100%;
+    position: relative;
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+.main::-webkit-scrollbar {
+  display: none; 
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background: #1f2937;
-  color: #fff;
+  padding: 10px 0;
+  background: white;
+  color: #004CFF;
+  border-bottom: 1px solid rgba(194, 193, 193, 0.753);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
 
 .logo {
   font-weight: bold;
   font-size: 18px;
   text-decoration: none;
-  color: #fff;
+  color: #004CFF;
+  margin-left: 10px;
 }
 
 .profile-con {
   display: flex;
   align-items: center;
+  margin-right: 10px;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
 }
 
 .profile-image {
-  width: 32px;
-  height: 32px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .container {
@@ -52,30 +80,85 @@ header {
 }
 
 .btn:hover {
-  background: #2563eb;
+  background: #004CFF;
 }
 
+.login-container {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 60px;
+  max-height: 400px;
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
 .bookmark-container {
   padding: 10px;
-  max-height: 200px;
   overflow-y: auto;
   border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 60px;
+  max-height: 400px;
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
 }
+.bookmark-container::-webkit-scrollbar {
+  display: none; 
+}
+.loading-container {
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 10px;
+    column-gap: 10px;
+}
+
 
 .bookmark-item {
   display: flex;
-  align-items: center;
+  align-items: start;
   margin-bottom: 10px;
   background: #fff;
-  padding: 5px;
+  padding: 8px;
   border-radius: 4px;
   box-shadow: 0 0 2px rgba(0,0,0,0.1);
+  width: 100%;
+  max-height: 100px;
+  overflow-y: auto;
+  max-width: 240px;
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
+.bookmark-item::-webkit-scrollbar {
+  display: none; 
 }
 
-.bookmark-item .favicon {
-  width: 24px;
-  height: 24px;
+.favicon-con {
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
   margin-right: 8px;
+  overflow: hidden;
+  border-radius: 100%;
+  box-shadow: 0 0 2px rgba(0,0,0,0.1);
+}
+.favicon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;  
 }
 
 .bookmark-info .title {
@@ -85,7 +168,8 @@ header {
 }
 
 .bookmark-info .summary {
-  margin: 0;
+  margin: 0px;
+  margin-top: 8px;
   font-size: 12px;
   color: #555;
 }
@@ -100,10 +184,99 @@ header {
   color: red;
   text-align: center;
 }
+
+.skeleton-bookmark{
+    width: 240px;
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 0 2px rgba(0,0,0,0.1);
+  max-height: 100px;
+  max-width: 240px;
+  background-color: #e4e4e4;
+}
+
+.skeleton{
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(90deg, #e9e9ef 0%, #f5f6fa 40%, #e9e9ef 80%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.2s linear infinite;
+}
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+.skeleton-bookmark-info{
+    width: 87%;
+    height: fit;
+}
+.skeleton-title {
+    width: 100%;
+    height: 20px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+.skeleton-text {
+    width: 100%;
+    height: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+.skeleton-favicon {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+}
+.loading-profile-con {
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+}
+.sign-out{
+    position: absolute;
+    bottom: -100%;
+    right: 0;
+    padding: 10px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    width: fit-content;
+    background: white;
+    display: none;
+}
+.show-sign-out{
+    display: block;
+}
+.sign-out-btn {
+    padding: 4px;
+    font-size: 14px;
+    background-color: transparent;
+    font-weight: 500;
+    color: red;
+    outline: none;
+    stroke: none;
+    border: none;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
   </style>
 </head>
 <body>
   <main class="main">
+    <header>
+        <a href="#" class="logo">Briefly</a>
+        <div class="loading-profile-con skeleton"></div>
+    </header>
     <div class="login-container">
         <h3>Sign in to Briefly</h3>
         <button id="googleLogin">Sign in with Google</button>
