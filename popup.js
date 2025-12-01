@@ -116,7 +116,8 @@ async function getUserBookmarks(userId) {
     if (!res.ok) throw new Error("Failed to fetch bookmarks");
 
     const data = await res.json();
-    const bookmarks = data.data;
+    const bookmarks = data.data.bookmarks;
+    console.log(bookmarks);
 
     container.innerHTML = "";
 
