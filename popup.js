@@ -112,7 +112,7 @@ function renderBookmarkUI(user) {
 async function getUserBookmarks(userId) {
   const container = document.getElementById("bookmark-container");
   try {
-    const res = await fetch(`http://localhost:4000/api/bookmarks/${userId}`);
+    const res = await fetch(`https://briefly-backend-vriy.onrender.com/api/bookmarks/${userId}`);
     if (!res.ok) throw new Error("Failed to fetch bookmarks");
 
     const data = await res.json();
@@ -169,7 +169,7 @@ async function bookmarkCurrentPage() {
           return;
         }
   
-        const res = await fetch("http://localhost:4000/api/bookmarks", {
+        const res = await fetch("https://briefly-backend-vriy.onrender.com/api/bookmarks", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -295,7 +295,7 @@ async function loginWithGoogle() {
         }
       });
 
-      await fetch("http://localhost:4000/api/add-user", {
+      await fetch("https://briefly-backend-vriy.onrender.com/api/add-user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
